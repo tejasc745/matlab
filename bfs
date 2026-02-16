@@ -1,0 +1,30 @@
+% C-> Coefficients of Z (after standardization)
+C=[-0.01 0.5 0 0];
+% A-> Coefficients of Constraints (after standardization)
+A=[2 5 1 0 ; 1 1 0 1];
+b=[80 ; 20];
+
+% m-> no of constraints(1), n-> no of variables(2)
+m=size(A,1);
+n=size(A,2);
+
+nv=nchoosek(n,m);
+t=nchoosek(1:n,m);
+
+sol=[];
+if(n>=m)
+    for(i=1:nv)
+        y=zeros(n,1);
+        B=A(:,t(i,:));
+        x=B\b;
+        if all(x>=0 & x~=inf & x~=-inf)
+            y(t(i,:))=x;
+            sol=[sol, y];
+        end
+    end
+end
+Z=C*sol;
+[zmax,zind]=max(Z);
+BFS=sol(:,zind);
+optVal=[BFS']
+zmax
