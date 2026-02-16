@@ -1,0 +1,79 @@
+%phase 1 - input parameters 
+c=[3 -5];
+A=[1 1;2 -1;1 2];
+b=[6;9;6]; %ensure column matrix
+
+z=@(x1,x2) 3*x1-5*x2;
+c1=@(x1,x2) x1+x2-6;
+c2=@(x1,x2) 2*x1-x2-9;
+c3=@(x1,x2) x1+2*x2-6;
+
+%m - number of constraints - number of rows
+%n - number of variables - number of columns
+m=size(A,1)
+n=size(A,2)
+
+%or [m n]=size(A)
+
+%phase 2 - plotting
+x1=0:max(b./A(:,1));
+
+for i=1:m
+    x2=(b(i)-A(i,1)*x1)/A(i,2);
+    %x2=max(0,x2);
+    plot(x1,x2);
+    hold on;
+end
+
+%phase 3-find intersection + corner points
+A=[A;eye(2)];
+b=[b;zeros(2,1)];
+
+m=size(A,1);
+pt=[];
+
+for i=1:m
+    for j=i+1:m
+        aa=[A(i,:);A(j,:)];
+        bb=[b(i);b(j)];
+
+        if (det(aa))
+            X=aa\bb
+            if(X>=0)
+                pt=[pt X]
+            end
+            pt=[pt X]
+
+        end
+    end
+end
+pt=unique(pt','rows')'
+display(pt)
+
+%phase 4 - get feasible points
+FP=[];
+Z=[];
+
+for i=1:size(pt,2)
+    pt1=pt(1,i);
+    pt2=pt(2,i);
+
+    %feasible point - satisfies all constraints
+    if(c1(pt1,pt2)<=0&& c2(pt1,pt2)>=0 && c3(pt1,pt2)<=0)
+        FP=[FP pt(:,i)];
+        plot(pt1,pt2,'*r','markersize',10);
+        cost=z(pt1,pt2);
+        Z=[Z cost];
+    end
+end
+
+fprintf('Z')
+disp(Z)
+fprintf('FP')
+disp(FP)
+hold off
+
+%phase 5 - get optimal value
+[optimal_value, index]=min(Z)
+
+optimal_sol=FP(:,index)
