@@ -38,11 +38,11 @@ for i=1:m
         bb=[b(i);b(j)];
 
         if (det(aa))
-            X=aa\bb
+            X=aa\bb;
             if(X>=0)
-                pt=[pt X]
+                pt=[pt X];
             end
-            pt=[pt X]
+            pt=[pt X];
 
         end
     end
@@ -59,7 +59,7 @@ for i=1:size(pt,2)
     pt2=pt(2,i);
 
     %feasible point - satisfies all constraints
-    if(c1(pt1,pt2)<=0&& c2(pt1,pt2)>=0 && c3(pt1,pt2)<=0)
+    if(c1(pt1,pt2)<=0&& c2(pt1,pt2)>=0 && c3(pt1,pt2)<=0 && pt1>=0 && pt2>=0)
         FP=[FP pt(:,i)];
         plot(pt1,pt2,'*r','markersize',10);
         cost=z(pt1,pt2);
