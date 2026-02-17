@@ -36,7 +36,7 @@ b=[b;zeros(2,1)];
 %b=[6;9;0;0];
 
 m=size(A,1);
-pt=[]
+pt=[];
 
 for i=1:m
     for j=i+1:m
@@ -44,31 +44,31 @@ for i=1:m
         bb=[b(i);b(j)];
 
         if (det(aa)~=0)
-            X=aa\bb
+            X=aa\bb;
             if(X>=0)
-                pt=[pt X]
+                pt=[pt X];
             end
-            pt=[pt X]
+            pt=[pt X];
         end
     end
 end
 display(pt)
 
 %phase 4 - get feasible points
-FP=[]
-Z=[]
+FP=[];
+Z=[];
 %pt = [ 1 3 5; 2 4 6];
 
 for i=1:size(pt,2)
-    pt1=pt(1,i)
-    pt2=pt(2,i)
+    pt1=pt(1,i);
+    pt2=pt(2,i);
 
     %feasible point - satisfies all constraints
     if(c1(pt1,pt2)<=0 && c2(pt1,pt2)<=0 && pt1>=0 && pt2>=0)
-        FP=[FP pt(:,i)]
+        FP=[FP pt(:,i)];
         plot(pt1,pt2,'*r','markersize',10)
-        cost=z(pt1,pt2)
-        Z=[Z cost]
+        cost=z(pt1,pt2);
+        Z=[Z cost];
     end
 end
 
